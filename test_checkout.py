@@ -1,9 +1,10 @@
 import logging
-from checkout_service import calculate_checkout_total
+from checkout_service import calculate_checkout_total, MoneyContext, DiscountPolicy
 
-def test_checkout_mutation_bug():
+def test_checkout_immutable_pass():
     logger = logging.getLogger("test")
-    # Очікуємо: 100 * 0.85 (VIP) + 20% податок = 102.0
-    # Через баг мутації отримаємо 17.0 (касовий розрив)
-    result = calculate_checkout_total(100.0, "USD", 0.20, "", True, 1, logger)
-    assert result == 102.0, f"CRITICAL MUTATION BUG: expected 102.0, got {result}"
+    money = MoneyContext(base_amount=100.0, currency="USD", tax_rate=0.20)
+    policy = DiscountPolicy(discount_code="", is_vip=True)
+    
+    result = calculate_checkout_total(money, policy, 1, logger)
+    assert result == 102.0
