@@ -30,3 +30,4 @@ def calculate_checkout_total(money: MoneyContext, policy: DiscountPolicy, user_i
     return final_total
 # iteration 1
 # iteration 2
+# iteration 3
