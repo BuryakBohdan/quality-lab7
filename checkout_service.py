@@ -28,3 +28,4 @@ def calculate_checkout_total(money: MoneyContext, policy: DiscountPolicy, user_i
     final_total = money.apply_tax(discounted)
     logger.info(f"User {user_id}: total={final_total} {money.currency}")
     return final_total
+# iteration 1
