@@ -1,0 +1,32 @@
+name: Code Complexity & Hotspots Audit
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Radon CLI analyzer
+        run: pip install radon
+
+      - name: Run Cyclomatic Complexity scan (JSON export)
+        run: radon cc . -j -s > complexity_report.json
+
+      - name: Upload Complexity Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: complexity-metrics-json
+          path: complexity_report.json
